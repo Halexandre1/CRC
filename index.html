@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Estudos Focado - CRC 2025/2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .progress-bar-animated {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .icon-transition, .chevron-transition {
+            transition: all 0.3s ease-in-out;
+        }
+        .summary-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), padding 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .summary-content.expanded {
+            max-height: 1200px; /* Altura aumentada para resumos maiores */
+        }
+        .summary-content h4 {
+            font-weight: 600;
+            color: #334155; /* slate-700 */
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-content p, .summary-content li {
+            color: #475569; /* slate-600 */
+            line-height: 1.6;
+        }
+        .summary-content .example {
+            background-color: #f1f5f9; /* slate-100 */
+            border-left: 4px solid #6366f1; /* indigo-500 */
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        .summary-content .attention {
+            background-color: #fefce8; /* yellow-50 */
+            border-left: 4px solid #facc15; /* yellow-400 */
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-indigo-100 min-h-screen">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-3xl">
+
+        <!-- Cabeçalho -->
+        <header class="text-center mb-10">
+            <div class="inline-block bg-white p-3 rounded-full shadow-md mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-800">Plano de Estudos Focado - CRC 2025/2</h1>
+            <p class="text-slate-500 mt-2 text-lg">Resumos revisados e alinhados com a banca FGV.</p>
+        </header>
+
+        <!-- Resumo do Progresso -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+            <h2 class="text-xl font-bold text-slate-700 mb-4">Seu Progresso Geral</h2>
+            <div class="w-full bg-slate-200 rounded-full h-5 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-sky-500 to-indigo-500 h-5 text-xs font-bold text-white text-center p-0.5 leading-none rounded-full progress-bar-animated" style="width: 0%">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+            <p id="summaryText" class="text-center mt-4 text-slate-600">Marque os tópicos abaixo para começar.</p>
+        </div>
+
+        <!-- Lista de Disciplinas -->
+        <div id="subjectsContainer" class="space-y-4">
+            <!-- As disciplinas serão inseridas aqui pelo JavaScript -->
+        </div>
+
+    </div>
+
+    <script>
+        // Definição das disciplinas focadas, com resumos detalhados e revisados.
+        let subjects = [
+            { name: "Provisões (CPC 25)", completed: false, expanded: false, summary: `
+                <h4>O que é uma Provisão?</h4>
+                <p>Uma provisão é um <strong>passivo de prazo ou valor incerto</strong>. A empresa sabe que tem uma obrigação, mas não tem certeza absoluta do valor ou da data de pagamento.</p>
+                <h4>As 3 Condições para Reconhecimento</h4>
+                <p>Para registrar uma provisão, TODAS as três condições devem ser atendidas:</p>
+                <ol class="list-decimal list-inside space-y-2 mt-2">
+                    <li><strong>Obrigação Presente:</strong> Resultante de um evento passado (ex: uma venda com garantia, um processo judicial em andamento).</li>
+                    <li><strong>Saída de Recursos Provável:</strong> A chance de ter que pagar é maior que a de não pagar (> 50%).</li>
+                    <li><strong>Estimativa Confiável:</strong> O valor da obrigação pode ser estimado com segurança.</li>
+                </ol>
+                <div class="example">
+                    <strong>Exemplo Prático (Garantia):</strong> Uma loja vende 1.000 produtos a R$100 cada. Com base na experiência, 3% dos produtos apresentarão defeito e precisarão de reparo, a um custo de R$30 por unidade.
+                    <ul>
+                        <li><strong>Obrigação Presente:</strong> A venda dos produtos gerou a obrigação de garantia.</li>
+                        <li><strong>Saída Provável:</strong> A experiência mostra que a saída de recursos para reparos é provável.</li>
+                        <li><strong>Estimativa Confiável:</strong> 1.000 x 3% x R$30 = R$ 900.</li>
+                    </ul>
+                    A empresa deve registrar uma <strong>Provisão para Garantias</strong> de R$ 900.
+                </div>
+                <div class="attention">
+                    <h4>Dica de Prova (FGV): Provável vs. Possível vs. Remoto</h4>
+                    <p>A FGV adora testar essa diferença! Lembre-se:</p>
+                    <ul>
+                        <li><strong>Provável:</strong> Chance alta (>50%). <strong>SEMPRE</strong> registra a Provisão no Passivo.</li>
+                        <li><strong>Possível:</strong> Chance média, nem provável nem remota. <strong>NÃO</strong> registra no Passivo, mas <strong>divulga em Notas Explicativas</strong> (isso é um Passivo Contingente).</li>
+                        <li><strong>Remoto:</strong> Chance muito baixa. Não faz nada, nem registra, nem divulga.</li>
+                    </ul>
+                </div>
+            `},
+            { name: "CPC 00 - Estrutura Conceitual (Parte 1)", completed: false, expanded: false, summary: `
+                <h4>O que é o CPC 00?</h4>
+                <p>É a "constituição" da contabilidade. Não é uma norma específica, mas sim a base conceitual para todas as outras. Se você tem uma dúvida que nenhum CPC específico resolve, a resposta está nos conceitos do CPC 00.</p>
+                <h4>Características Qualitativas Fundamentais</h4>
+                <p>Para a informação ser útil, ela precisa ser:</p>
+                <ol class="list-decimal list-inside space-y-2 mt-2">
+                    <li><strong>Relevante:</strong> Capaz de fazer a diferença nas decisões. A informação tem <strong>valor preditivo</strong> (ajuda a prever o futuro) e/ou <strong>valor confirmatório</strong> (confirma ou corrige o que se esperava).</li>
+                    <li><strong>Representação Fidedigna:</strong> A informação deve ser <strong>completa, neutra e livre de erro</strong>. Ela deve retratar a realidade econômica da empresa.</li>
+                </ol>
+                <div class="attention">
+                    <h4>Dica de Prova (FGV): Identificando as Características</h4>
+                    <p>A FGV pode dar um cenário e perguntar qual característica foi ferida. Exemplo: "A empresa omitiu uma grande dívida do balanço para não assustar os investidores". Isso fere a <strong>Representação Fidedigna</strong> (porque a informação não está completa nem neutra).</p>
+                </div>
+            `},
+            { name: "CPC 27 - Ativo Imobilizado (Parte 1: Custo)", completed: false, expanded: false, summary: `
+                <h4>O que compõe o Custo de um Imobilizado?</h4>
+                <p>O custo de aquisição não é só o preço da nota fiscal! Ele inclui todos os gastos necessários para colocar o bem em condições de uso. A regra é: <strong>o custo para no momento em que o ativo está pronto para operar da maneira pretendida pela administração.</strong></p>
+                <h4>Itens que ENTRAM no Custo:</h4>
+                <ul class="list-disc list-inside space-y-2 mt-2">
+                    <li>Preço de compra (menos descontos comerciais).</li>
+                    <li>Impostos de importação e outros impostos <strong>não recuperáveis</strong> (Ex: ICMS não recuperável).</li>
+                    <li>Frete, seguro do transporte, custos de instalação e montagem.</li>
+                    <li>Custos com testes de funcionamento.</li>
+                    <li>Custos de desmontagem e remoção futura (se houver a obrigação).</li>
+                </ul>
+                <h4>Itens que NÃO ENTRAM no Custo (viram despesa):</h4>
+                <ul class="list-disc list-inside space-y-2 mt-2">
+                    <li>Custos de abertura de uma nova instalação.</li>
+                    <li>Custos de publicidade e propaganda para lançar um novo produto.</li>
+                    <li>Despesas administrativas e outros gastos indiretos.</li>
+                    <li>Custos incorridos após o ativo já estar pronto para uso.</li>
+                </ul>
+                <div class="example">
+                    <strong>Exemplo Prático (FGV Style):</strong> Uma empresa compra uma máquina por R$500.000, pagando R$50.000 de ICMS, dos quais R$30.000 são recuperáveis. Gasta R$15.000 de frete e R$25.000 para instalar. Qual o custo do imobilizado?<br>
+                    Custo = 500.000 + (50.000 - 30.000 de ICMS recuperável) + 15.000 + 25.000 = <strong>R$ 560.000</strong>. O ICMS recuperável vira um crédito no ativo, não custo.
+                </div>
+            `},
+            { name: "CPC 00 - Estrutura Conceitual (Parte 2)", completed: false, expanded: false, summary: `
+                <h4>Características Qualitativas de Melhoria</h4>
+                <p>Elas "turbinam" as características fundamentais:</p>
+                <ul class="list-disc list-inside space-y-2 mt-2">
+                    <li><strong>Comparabilidade:</strong> Permite comparar a empresa com ela mesma ao longo do tempo ou com outras empresas do setor.</li>
+                    <li><strong>Verificabilidade:</strong> Diferentes observadores independentes chegariam à mesma conclusão sobre a informação (ex: dois auditores concordam com o valor do estoque).</li>
+                    <li><strong>Tempestividade:</strong> A informação deve chegar a tempo de ser útil. Balanço de 5 anos atrás não ajuda a decidir hoje.</li>
+                    <li><strong>Compreensibilidade:</strong> A informação deve ser clara e concisa.</li>
+                </ul>
+                <h4>Elementos das Demonstrações</h4>
+                <p>A definição de Ativo e Passivo mudou recentemente e a FGV vai cobrar isso!</p>
+                <ul class="list-disc list-inside space-y-2 mt-2">
+                    <li><strong>Ativo:</strong> Um <strong>recurso econômico</strong> (direito com potencial de produzir benefícios) <strong>presente</strong>, <strong>controlado</strong> pela entidade como resultado de eventos passados.</li>
+                    <li><strong>Passivo:</strong> Uma <strong>obrigação presente</strong> da entidade de transferir um recurso econômico como resultado de eventos passados.</li>
+                </ul>
+                <div class="attention">
+                    <h4>Atenção FGV: Restrição do Custo</h4>
+                    <p>O CPC 00 deixa claro que existe uma restrição: o <strong>custo de gerar a informação não pode ser maior que o benefício</strong> que ela proporciona. A FGV pode apresentar um cenário onde gerar uma informação super detalhada custaria milhões, mas o benefício seria pequeno, e perguntar sobre essa restrição.</p>
+                </div>
+            `},
+            { name: "Despesas Antecipadas", completed: false, expanded: false, summary: `
+                <h4>O que é uma Despesa Antecipada?</h4>
+                <p>É um <strong>ATIVO</strong> que representa um pagamento feito por um bem ou serviço que será consumido no futuro. É um <strong>direito</strong> de receber esse serviço/bem. O nome pode confundir, mas pense em "Direitos Pagos Antecipadamente".</p>
+                <h4>Apropriação: A Mágica da Competência</h4>
+                <p>O valor pago fica no Ativo e é transferido para a Despesa (no resultado) à medida que o tempo passa e o benefício é consumido. Isso se chama <strong>apropriação</strong>.</p>
+                <div class="example">
+                    <strong>Exemplo Prático (Aluguel):</strong> Em 01/Dez, a empresa paga R$ 30.000 referente a 3 meses de aluguel (Dez, Jan, Fev).<br>
+                    <strong>1. No Pagamento (01/Dez):</strong><br>
+                    D - Aluguéis a Apropriar (Ativo) R$ 30.000<br>
+                    C - Caixa/Bancos (Ativo) R$ 30.000<br>
+                    <strong>2. Na Apropriação do 1º Mês (31/Dez):</strong><br>
+                    D - Despesa de Aluguel (Resultado) R$ 10.000<br>
+                    C - Aluguéis a Apropriar (Ativo) R$ 10.000<br>
+                    <p class="mt-2">No balanço de 31/Dez, o saldo no ativo será de R$ 20.000, referente aos direitos de Jan e Fev.</p>
+                </div>
+                <div class="attention">
+                    <h4>Dica de Prova (FGV)</h4>
+                    <p>A FGV adora pedir o saldo da conta de "Despesa Antecipada" ou da conta de "Despesa" em uma data futura. Leia com atenção o período do contrato e a data que a questão pede.</p>
+                </div>
+            `},
+            { name: "CPC 16 - Estoques (Parte 1: Mensuração)", completed: false, expanded: false, summary: `
+                <h4>A Regra de Ouro: Custo vs. Valor Realizável Líquido</h4>
+                <p>O estoque deve ser registrado no balanço pelo <strong>valor de custo ou pelo valor realizável líquido (VRL), dos dois o menor</strong>.</p>
+                <ul class="list-disc list-inside space-y-2 mt-2">
+                    <li><strong>Custo:</strong> Tudo o que se gasta para ter o estoque pronto para venda (preço, frete, impostos não recuperáveis, etc.).</li>
+                    <li><strong>Valor Realizável Líquido (VRL):</strong> É o Preço de Venda Estimado <strong>menos</strong> os Gastos para Vender (comissão, marketing, etc.).</li>
+                </ul>
+                <div class="example">
+                    <strong>Exemplo Prático (FGV Style):</strong> Uma empresa tem um estoque cujo custo é R$ 1.000. O preço de venda normal é R$ 1.200. Porém, o produto está obsoleto e a empresa estima que só conseguirá vender por R$ 900. Para isso, terá que pagar 10% de comissão ao vendedor.
+                    <ul>
+                        <li><strong>Custo = R$ 1.000</strong></li>
+                        <li><strong>VRL =</strong> R$ 900 (preço de venda) - R$ 90 (10% de comissão) = <strong>R$ 810</strong></li>
+                    </ul>
+                    <p class="mt-2">Como o VRL (R$ 810) é menor que o Custo (R$ 1.000), a empresa deve registrar uma <strong>Perda por Desvalorização de Estoque</strong> de R$ 190 (1.000 - 810), ajustando o valor do estoque no balanço para R$ 810.</p>
+                </div>
+            `},
+            { name: "CPC 16 - Estoques (Parte 2: Critérios de Custeio)", completed: false, expanded: false, summary: `
+                <h4>Critérios de Custeio (PEPS, Média)</h4>
+                <p>São métodos para calcular o Custo da Mercadoria Vendida (CMV) quando se compra itens idênticos por preços diferentes.</p>
+                <ol class="list-decimal list-inside space-y-2 mt-2">
+                    <li><strong>PEPS (Primeiro que Entra, Primeiro que Sai):</strong> Assume que os primeiros itens comprados são os primeiros vendidos. Em épocas de inflação, gera um CMV menor e um Lucro Bruto maior.</li>
+                    <li><strong>Média Ponderada Móvel:</strong> A cada compra, recalcula-se o custo médio unitário. É o método mais comum na prática.</li>
+                </ol>
+                <div class="example">
+                    <strong>Exemplo:</strong> Saldo inicial: 0. Dia 1: Compra 10 un. @ R$10. Dia 5: Compra 20 un. @ R$13. Dia 10: Vende 15 un.<br>
+                    <strong>CMV pelo PEPS:</strong> Vendeu as 10 primeiras e mais 5 das segundas. CMV = (10 x R$10) + (5 x R$13) = R$100 + R$65 = <strong>R$165</strong>.<br>
+                    <strong>CMV pela Média:</strong> Custo médio após compra do dia 5 = [(10x10)+(20x13)] / 30 = R$360 / 30 = R$12/un. CMV = 15 x R$12 = <strong>R$180</strong>.
+                </div>
+                <div class="attention">
+                    <h4>Atenção FGV: UEPS é Proibido!</h4>
+                    <p>O método <strong>UEPS (Último que Entra, Primeiro que Sai)</strong> é <strong>PROIBIDO</strong> pelo CPC 16 e pelas normas internacionais (IFRS) para fins de balanço. No entanto, a FGV pode incluí-lo como uma alternativa incorreta ou pedir para calcular o resultado por ele para fins comparativos. Fique atento!</p>
+                </div>
+            `},
+            { name: "CPC 27 - Ativo Imobilizado (Parte 2: Pós-Aquisição)", completed: false, expanded: false, summary: `
+                <h4>Depreciação: O Reconhecimento do Uso</h4>
+                <p>Depreciação é a alocação do custo de um ativo ao longo de sua <strong>vida útil econômica</strong>. É uma despesa que representa o consumo do benefício do ativo.</p>
+                <p><strong>Valor Depreciável = Custo - Valor Residual</strong></p>
+                <p>A FGV pode cobrar métodos além do linear:</p>
+                <ul class="list-disc list-inside mt-2">
+                    <li><strong>Método Linear:</strong> Valor igual todo período.</li>
+                    <li><strong>Método dos Saldos Decrescentes:</strong> A despesa é maior no início e diminui com o tempo.</li>
+                    <li><strong>Método de Unidades Produzidas:</strong> A despesa varia conforme a produção/uso do ativo.</li>
+                </ul>
+                <h4>Impairment (Teste de Recuperabilidade - CPC 01)</h4>
+                <p>É a verificação para garantir que um ativo não está registrado por um valor maior do que ele pode ser recuperado. Compara-se o <strong>Valor Contábil</strong> com o <strong>Valor Recuperável</strong>.</p>
+                <p><strong>Valor Recuperável = O MAIOR valor entre o Valor em Uso e o Valor Justo Líquido de Venda.</strong></p>
+                <div class="example">
+                    <strong>Exemplo Prático (Impairment):</strong> Uma máquina tem valor contábil de R$ 100.000. A empresa calcula que, se a vendesse hoje, conseguiria R$ 90.000 (valor justo líquido). Se continuasse usando-a, os fluxos de caixa futuros que ela geraria, trazidos a valor presente, somam R$ 95.000 (valor em uso).
+                    <ul>
+                        <li>Valor Contábil = R$ 100.000</li>
+                        <li>Valor Recuperável = O maior entre 90k e 95k = <strong>R$ 95.000</strong></li>
+                    </ul>
+                    <p class="mt-2">Como o Valor Contábil (100k) é maior que o Valor Recuperável (95k), a empresa deve registrar uma <strong>Perda por Impairment de R$ 5.000</strong>.</p>
+                </div>
+            `}
+        ];
+
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const summaryText = document.getElementById('summaryText');
+
+        const STORAGE_KEY = 'crc_study_progress_focused_v2'; // Nova chave
+
+        // Ícones SVG
+        const pendingIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-slate-400 icon-transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+        const completedIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600 icon-transition" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+        const chevronIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 chevron-transition text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`;
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+        }
+
+        function loadProgress() {
+            const savedProgress = localStorage.getItem(STORAGE_KEY);
+            if (savedProgress) {
+                subjects = JSON.parse(savedProgress);
+            }
+        }
+
+        function renderSubjects() {
+            subjectsContainer.innerHTML = ''; 
+            subjects.forEach((subject, index) => {
+                const isCompleted = subject.completed;
+                const isExpanded = subject.expanded;
+
+                const subjectElement = document.createElement('div');
+                subjectElement.className = `card-item bg-white rounded-xl shadow-md overflow-hidden`;
+                
+                subjectElement.innerHTML = `
+                    <div class="card-header flex items-center justify-between p-4 cursor-pointer ${isCompleted ? 'bg-slate-50' : ''}" onclick="toggleSummary(${index})">
+                        <div class="flex items-center">
+                            <div class="icon-container cursor-pointer p-1" onclick="event.stopPropagation(); toggleSubject(${index});">
+                                ${isCompleted ? completedIcon : pendingIcon}
+                            </div>
+                            <span class="ml-3 text-lg font-medium ${isCompleted ? 'line-through text-slate-400' : 'text-slate-700'}">
+                                ${subject.name}
+                            </span>
+                        </div>
+                        <div class="chevron-container ${isExpanded ? 'rotate-180' : ''}">
+                            ${chevronIcon}
+                        </div>
+                    </div>
+                    <div class="summary-content ${isExpanded ? 'expanded' : ''}">
+                        <div class="p-5 pt-2 border-t border-slate-200">
+                            ${subject.summary}
+                        </div>
+                    </div>
+                `;
+                
+                subjectsContainer.appendChild(subjectElement);
+            });
+            updateProgress();
+        }
+
+        window.toggleSubject = function(index) {
+            subjects[index].completed = !subjects[index].completed;
+            saveProgress();
+            renderSubjects();
+        }
+        
+        window.toggleSummary = function(index) {
+            subjects[index].expanded = !subjects[index].expanded;
+            saveProgress();
+            renderSubjects();
+        }
+
+        function updateProgress() {
+            const completedSubjects = subjects.filter(s => s.completed).length;
+            const totalSubjects = subjects.length;
+            const percentage = totalSubjects > 0 ? Math.round((completedSubjects / totalSubjects) * 100) : 0;
+
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+            
+            if (totalSubjects > 0) {
+                 summaryText.textContent = `Você completou ${completedSubjects} de ${totalSubjects} tópicos.`;
+            }
+
+            if (percentage === 100) {
+                summaryText.innerHTML = "<strong>Parabéns!</strong> Você concluiu todos os tópicos. Hora de revisar!";
+                progressBar.classList.remove('from-sky-500', 'to-indigo-500');
+                progressBar.classList.add('from-emerald-500', 'to-green-600');
+            } else {
+                progressBar.classList.add('from-sky-500', 'to-indigo-500');
+                progressBar.classList.remove('from-emerald-500', 'to-green-600');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            renderSubjects();
+        });
+    </script>
+
+</body>
+</html>
